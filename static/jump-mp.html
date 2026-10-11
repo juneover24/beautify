@@ -1,32 +1,56 @@
 <!doctype html>
 <html lang="zh-cn">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
-    <meta name="robots" content="noindex, nofollow">
-    <title>打开 “JuneOver24 工具箱” 小程序</title>
-    <style>
-      body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-        background: #ededed;
-        color: rgba(0, 0, 0, 0.55);
-        font-size: 16px;
-        text-align: center;
-      }
-      body a { color: #07c160; text-decoration: none; }
-    </style>
-  </head>
-  <body>
-    <p>正在打开 “JuneOver24 工具箱”...</p>
-    <p>若未自动跳转，请点击 <a href="weixin://dl/business/?appid=wx547c3e01e5c36eae&amp;path=pages/pickup/pickup">打开小程序</a></p>
-    <script>
-      window.location.href = 'weixin://dl/business/?appid=wx547c3e01e5c36eae&path=pages/pickup/pickup';
-    </script>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>JuneOver24 工具箱</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--b:#f7f8fa;--c:#fff;--t:#191919;--m:#7f7f7f;--s:0 8px 24px #0001}
+@media(prefers-color-scheme:dark){:root{--b:#121212;--c:#1e1e1e;--t:#f0f0f0;--m:#999;--s:0 8px 24px #0006}}
+body{min-height:100vh;display:grid;place-items:center;background:var(--b);color:var(--t);font-family:-apple-system,system-ui,sans-serif;padding:24px}
+.box{background:var(--c);border-radius:20px;padding:36px 24px;width:100%;max-width:340px;text-align:center;box-shadow:var(--s)}
+.icon{position:relative;width:64px;height:64px;margin:0 auto 20px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(135deg,#07c160,#0aba5b)}
+.icon svg{width:32px;height:32px;fill:#fff}
+.pulse{position:absolute;inset:-4px;border-radius:22px;border:2px solid #07c160;animation:p 2s infinite ease-out}
+@keyframes p{0%{transform:scale(.95);opacity:.8}to{transform:scale(1.2);opacity:0}}
+h1{font-size:19px;font-weight:600;margin-bottom:8px}
+.desc{font-size:14px;color:var(--m);line-height:1.5}
+.btn{display:grid;place-items:center;height:46px;margin:24px 0 14px;background:#07c160;color:#fff;border-radius:12px;text-decoration:none;font-size:16px;font-weight:600}
+.btn:active{opacity:.85}
+.tip{font-size:12px;color:var(--m);opacity:.8}
+.err .icon{background:linear-gradient(135deg,#fa5151,#e03434)}
+.err .pulse{border-color:#fa5151}
+.err .desc{color:#fa5151}
+</style>
+</head>
+<body>
+<div class="box" id="card">
+<div class="icon">
+<div class="pulse"></div>
+<svg viewBox="0 0 24 24"><path d="M4 8h16v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8zm5-4h6a2 2 0 0 1 2 2v2H7V6a2 2 0 0 1 2-2z"/></svg>
+</div>
+<h1>JuneOver24 工具箱</h1>
+<p class="desc" id="msg">正在打开小程序...</p>
+<a class="btn" id="btn" href="javascript:;">打开小程序</a>
+<div class="tip" id="tip">若未自动跳转，请点击上方按钮</div>
+</div>
+<script>
+(function(){
+var W="pages/pickup/pickup,pages/profile/profile,packageMember/pages/member-mark/member-mark,packageTools/pages/tools/tools,packageCommunity/pages/community/community,packageOther/pages/query/query,packageShop/pages/product-detail/product-detail,packageManage/pages/creator/creator,packageManage/pages/manage/manage,packageManage/pages/creator-upload-manage/creator-upload-manage,packageShop/pages/creator-profile/creator-profile,packageAccount/pages/login/login".split(",");
+var q=(location.search||"").replace(/^\?/,"");
+var d=document,card=d.getElementById("card"),msg=d.getElementById("msg"),btn=d.getElementById("btn"),tip=d.getElementById("tip");
+if(new Blob([q]).size>800){card.className="box err";msg.textContent="参数过长（超过800字节熔断）";btn.style.display="none";tip.textContent="安全保护已生效，未执行唤醒";return}
+var p="pages/pickup/pickup",c=q,m=q.match(/(?:^|&)_path=([^&#]*)/);
+if(m){try{var x=decodeURIComponent(m[1]).replace(/^\/+/,"");if(W.indexOf(x)!==-1){p=x}}catch(e){}c=q.replace(/(?:^|&)_path=[^&#]*/,"").replace(/^&+/,"").replace(/&+$/,"")}
+var u="weixin://dl/business/?appid=wx547c3e01e5c36eae&path="+p;
+if(c){u+="&query="+encodeURIComponent(c)}
+if(history.replaceState){try{history.replaceState(null,"",location.pathname)}catch(e){}}
+btn.href=u;
+btn.onclick=function(){location.href=u};
+try{location.href=u}catch(e){}
+})();
+</script>
+</body>
 </html>
